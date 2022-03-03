@@ -64,15 +64,17 @@ spec:
         - name: "SITEMON_INTERVAL"
           value: "60"
 ```
+
 You can save the above definition in a file (e.g., sitemon-deployment.yaml) and deploy to your cluster (e.g., sitemon namespace) by running:
 ```
 kubectl create ns sitemon
 kubectl -n sitemon apply -f sitemon-deployment.yaml
 ```
+
 You can then examine the pod status and logs to verify that the app is working as expected.
 ![kubectl output](sitemon-examine.png)
 
-You would need to expose the application through a service (e.g., NodePort) or some form of ingress, to be able to have your Prometheus server scrape the metrics from sitemon pods.  Once exposed you should be able to access the metrics info from http://$nodeIP:$port/metrics.  This metrics URL must be accessible by the Prometheus server.
+You would need to expose the application through a service (e.g., NodePort) or some form of ingress, so that your Prometheus server could scrape the metrics info from the app.  Once exposed you should be able to access the metrics info from http://$nodeIP:$port/metrics.  This metrics URL must be accessible by the Prometheus server.
 
 #### Screenshot of metrics info:
 ![metrics info](metrics.png)
@@ -103,12 +105,12 @@ Once running you should be able to access the metrics info from http://localhost
    
 ### How to build the container image
 You can use the following files from this repo to build the container image:
-```
+
 [Dockerfile](Dockerfile)
 [requirements.txt](requirements.txt)
 [app.py](app.py)
-```
-To build the image, you can run the following:
+
+To build the image, you can run the following command in the same directory where the above files are located.
 ```
 docker build --tag=alexisv914/sitemon:0.1 .
 ```
