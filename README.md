@@ -8,6 +8,17 @@ It can be deployed in a Kubernetes cluster, or ran in a container, or as a stand
 It uses the requests module to connect (using GET) to the URLs, which are configurable. It gets the HTTP status code and elapsed time from the connection object, and provides these as the metrics.  It has a main loop wherein it probes the URL's and then sleeps for a set interval before probing them again.  It uses the prometheus_client module to run a simple http server to serve the metrics.
 
 
+## Metrics provided
+There are two metrics that are provided by the app for each URL.
+1. sample_external_url_up
+   - metrics type is gauge
+   - boolean value of 1 or 0
+   - if HTTP status code is 200, then this is set to 1 otherwise it is set to 0
+2. sample_external_url_response_ms
+   - metrics type is gauge
+   - this is the elapsed time property from the requests connection object
+   - this is elapsed time in milliseconds
+
 ## Configuration
 There are three settings that can be configured.  These are set via environment variables.  These can be set in the deployment definition, if the app is to be deployed on Kubernetes.
 
@@ -135,7 +146,7 @@ scrape_configs:
       static_configs:
         - targets: ['localhost:80']
 ```
-You can then restart Prometheus after adding the config similar to the above.
+You can then restart Prometheus after adding the config similar to the above.  Afterwards, you can create the dashboard and panels in Grafana using the sitemon metrics from Prometheus. 
 
 #### Screenshot of Prometheus UI showing the sample_external_url_response_ms metric:
 ![prometheus sample_external_url_response_ms](prometheus-sample_external_url_response_ms.png)
