@@ -153,7 +153,7 @@ You can run [test_app.py](test_app.py) for the unit tests on getstat() and getse
 python3 test_app.py
 ```
 The tests include the following assertions among others:
-	- exception is raised if SITEMON_METRICSPORT or SITEMON_URLS is missing or invalid
-	- the tuple item for "up" returned by getstat() is set to 0 for connection errors or invalid URLs
+- exception is raised if SITEMON_METRICSPORT or SITEMON_URLS is missing or invalid
+- the tuple item for "up" returned by getstat() is set to 0 for connection errors or invalid URLs
 
 
