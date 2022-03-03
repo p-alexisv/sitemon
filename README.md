@@ -67,7 +67,7 @@ You can save the above definition in a file (e.g., sitemon-deployment.yaml) and 
 kubectl create ns sitemon
 kubectl -n sitemon apply -f sitemon-deployment.yaml
 ```
-You'd need to expose the application through a service (e.g., NodePort) or some form of ingress, to be able to have your Prometheus server scrape the metrics from sitemon pods.  Once exposed you should be able to access the metrics info from http://<node>:<port>/metrics.
+You'd need to expose the application through a service (e.g., NodePort) or some form of ingress, to be able to have your Prometheus server scrape the metrics from sitemon pods.  Once exposed you should be able to access the metrics info from http://$nodeIP:$port/metrics.
 
    
 ### How to run sitemon in a container
