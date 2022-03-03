@@ -5,7 +5,7 @@ Sitemon is a python app to monitor http/https URLs and provide Prometheus metric
 
 It can be deployed in a Kubernetes cluster, or ran in a container, or as a standalone script in a shell.
 
-It uses the requests module to connect (using GET) to the URLs, which are configurable. It gets the HTTP status code and elapsed time from the connection object, and provides these as the metrics.  It has a main loop wherein it probes the URL's and then sleeps for a set interval before probing them again.  It uses the prometheus_client module to run a simple http server to serve the metrics.
+It uses the requests module to connect (using GET) to the URLs, which are configurable. It gets the HTTP status code and elapsed time from the response object, and provides these as the metrics.  It has a main loop wherein it probes the URL's and then sleeps for a set interval before probing them again.  It uses the prometheus_client module to run a simple http server to serve the metrics.
 
 
 ## Metrics provided
@@ -16,7 +16,7 @@ There are two metrics that are provided by the app for each URL.
    - if HTTP status code is 200, then this is set to 1 otherwise it is set to 0
 2. sample_external_url_response_ms
    - metrics type is gauge
-   - this is the elapsed time property from the requests connection object
+   - this is the elapsed time property from the requests response object
    - this is elapsed time in milliseconds
 
 ## Configuration
