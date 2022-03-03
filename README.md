@@ -1,7 +1,7 @@
 # sitemon
 ## _An Internet URL monitoring solution_
 
-Sitemon is a python app to monitor http/s URLs and provide Prometheus metrics.
+Sitemon is a python app to monitor http/https URLs and provide Prometheus metrics.
 
 It can be deployed in a Kubernetes cluster, or ran in a container, or as a standalone script in a shell.
 
