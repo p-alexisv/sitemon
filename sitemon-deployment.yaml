@@ -25,26 +25,3 @@ spec:
           value: "https://httpstat.us/503,https://httpstat.us/200"
         - name: "SITEMON_INTERVAL"
           value: "60"
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: sitemon-service
-spec:
-  selector:
-    app: sitemon
-  ports:
-  # Default port used by the image
-  - port: 8000
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: sitemon-ingress
-spec:
-  defaultBackend:
-    service:
-      name: sitemon-service
-      port:
-        number: 8000
----
