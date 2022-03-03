@@ -126,6 +126,25 @@ scrape_configs:
       static_configs:
         - targets: ['localhost:80']
 ```
+   
+
+#### Screenshot of Prometheus UI showing the sample_external_url_response_ms metric:
+![image info](prometheus-sample_external_url_response_ms.png)
 
 
+#### Screenshot of Prometheus UI showing the sample_external_url_up metric:
+![image info](prometheus-sample_external_url_up.png)
 
+
+#### Screenshot of Grafana Dashboard showing the panels with the metrics:
+![image info](grafana-dashboard-sitemon.png)   
+   
+
+## Unit Tests
+You can run test_app.py for the unit tests on getstat() and getsettings() functions.
+```
+python3 test_app.py
+```
+   
+   
+   
