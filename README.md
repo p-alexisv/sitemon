@@ -9,7 +9,8 @@ It uses the requests module to connect (using GET) to the URLs, which are config
 
 
 ## Configuration
-There are three settings that can be configured.  These are set via environment variables.
+There are three settings that can be configured.  These are set via environment variables.  These can be set in the deployment definition, if the app is to be deployed on Kubernetes.
+
 1. Port
 
    ```export SITEMON_METRICSPORT=8000```
@@ -27,6 +28,7 @@ There are three settings that can be configured.  These are set via environment 
    ```export SITEMON_INTERVAL=60```
    
    This is the interval (in seconds) between probes.  If not set, then a default of 60 will be used.
+
 
 ## Usage
 
@@ -67,14 +69,17 @@ You can save the above definition in a file (e.g., sitemon-deployment.yaml) and 
 kubectl create ns sitemon
 kubectl -n sitemon apply -f sitemon-deployment.yaml
 ```
-You'd need to expose the application through a service (e.g., NodePort) or some form of ingress, to be able to have your Prometheus server scrape the metrics from sitemon pods.  Once exposed you should be able to access the metrics info from http://$nodeIP:$port/metrics.
+You can then examine the pod status and logs to verify that the app is working as expected.
+![kubectl output](sitemon-examine.png)
+
+You would need to expose the application through a service (e.g., NodePort) or some form of ingress, to be able to have your Prometheus server scrape the metrics from sitemon pods.  Once exposed you should be able to access the metrics info from http://$nodeIP:$port/metrics.  This metrics URL must be accessible by the Prometheus server.
 
 #### Screenshot of metrics info:
-![image info](metrics.png)
+![metrics info](metrics.png)
    
    
 ### How to run sitemon in a container
-Obviously, you'd need docker installed in the host where you run this.
+You would need docker installed in the host where you run this.
 
 You can use the pre-built image that is available in dockerhub.  If you want to build the image, then see the instructions in section "[How to build the container image](#how-to-build-the-container-image)"
 
@@ -82,12 +87,11 @@ You can run the following to start the container.
 ```
 docker run -d -p 8000:8000 -e SITEMON_METRICSPORT=8000 -e SITEMON_URLS="https://httpstat.us/503,https://httpstat.us/200" -e SITEMON_INTERVAL=60 --name="sitemon" alexisv914/sitemon:0.1
 ```
-
 Once running you should be able to access the metrics info from http://localhost:8000/metrics.
 
    
 ### How to run sitemon in a shell
-You need python3 installed where you run this.
+You would need python3 installed where you run this.
 ```
 export SITEMON_METRICSPORT=8000
 export SITEMON_URLS="https://httpstat.us/503,https://httpstat.us/200"
@@ -100,26 +104,26 @@ Once running you should be able to access the metrics info from http://localhost
 ### How to build the container image
 You can use the following files from this repo to build the container image:
 ```
-Dockerfile
-requirements.txt
-app.py
+[Dockerfile](Dockerfile)
+[requirements.txt](requirements.txt)
+[app.py](app.py)
 ```
 To build the image, you can run the following:
 ```
 docker build --tag=alexisv914/sitemon:0.1 .
 ```
-Once build is completed, you should see it in the list of your docker images.
+Once the build is completed, you should see it in the list of your docker images.
 ```
 docker images
-REPOSITORY                                           TAG         IMAGE ID       CREATED        SIZE
-alexisv914/sitemon                                   0.1         e9971092ad11   3 hours ago    131MB
+REPOSITORY                       TAG         IMAGE ID       CREATED        SIZE
+alexisv914/sitemon               0.1         e9971092ad11   3 hours ago    131MB
 ```
 
    
 ## Integrating with Prometheus and Grafana
-Once you have the app running and serving the metrics.  You should now be able to configure your Prometheus deployment to scrape metrics info from the app.
+Once you have the app running and serving the metrics.  You should now be able to configure your Prometheus deployment to scrape the metrics info from the metrics URL.
 
-The following is an example Prometheus config.  In this example, my sitemon metrics is accessible via http://localhost:80/metrics.
+The following is an example Prometheus config.  In this example, the metrics URL is http://localhost:80/metrics.
 ```
 scrape_configs:
     # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -132,22 +136,24 @@ scrape_configs:
    
 
 #### Screenshot of Prometheus UI showing the sample_external_url_response_ms metric:
-![image info](prometheus-sample_external_url_response_ms.png)
+![prometheus sample_external_url_response_ms](prometheus-sample_external_url_response_ms.png)
 
 
 #### Screenshot of Prometheus UI showing the sample_external_url_up metric:
-![image info](prometheus-sample_external_url_up.png)
+![prometheus sample_external_url_up](prometheus-sample_external_url_up.png)
 
 
 #### Screenshot of Grafana Dashboard showing the panels with the metrics:
-![image info](grafana-dashboard-sitemon.png)   
+![grafana dashboard](grafana-dashboard-sitemon.png)   
    
 
 ## Unit Tests
-You can run test_app.py for the unit tests on getstat() and getsettings() functions.
+You can run [test_app.py](test_app.py) for the unit tests on getstat() and getsettings() functions.
 ```
 python3 test_app.py
 ```
-   
-   
-   
+The tests include the following assertions among others:
+	- exception is raised if SITEMON_METRICSPORT or SITEMON_URLS is missing or invalid
+	- the tuple item for "up" returned by getstat() is set to 0 for connection errors or invalid URLs
+
+
