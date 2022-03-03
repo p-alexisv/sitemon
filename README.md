@@ -106,9 +106,9 @@ Once running you should be able to access the metrics info from http://localhost
 ### How to build the container image
 You can use the following files from this repo to build the container image:
 
-[Dockerfile](Dockerfile)
-[requirements.txt](requirements.txt)
-[app.py](app.py)
+- [Dockerfile](Dockerfile)
+- [requirements.txt](requirements.txt)
+- [app.py](app.py)
 
 To build the image, you can run the following command in the same directory where the above files are located.
 ```
@@ -123,9 +123,9 @@ alexisv914/sitemon               0.1         e9971092ad11   3 hours ago    131MB
 
    
 ## Integrating with Prometheus and Grafana
-Once you have the app running and serving the metrics.  You should now be able to configure your Prometheus deployment to scrape the metrics info from the metrics URL.
+Once you have the app running and the metrics URL accessible, you should now be able to configure your Prometheus deployment to scrape the metrics info from the metrics URL.
 
-The following is an example Prometheus config.  In this example, the metrics URL is http://localhost:80/metrics.
+The following is an example configuration that you can add to your Prometheus config to use the sitemon metrics.  In this example, the metrics URL is http://localhost:80/metrics.
 ```
 scrape_configs:
     # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -135,7 +135,7 @@ scrape_configs:
       static_configs:
         - targets: ['localhost:80']
 ```
-   
+You can then restart Prometheus after adding the config similar to the above.
 
 #### Screenshot of Prometheus UI showing the sample_external_url_response_ms metric:
 ![prometheus sample_external_url_response_ms](prometheus-sample_external_url_response_ms.png)
