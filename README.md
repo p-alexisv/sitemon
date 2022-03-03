@@ -31,7 +31,7 @@ There are three settings that can be configured.  These are set via environment 
 ## Usage
 
 ### How to deploy sitemon on a Kubernetes cluster
-If you have an existing Kubernetes cluster, you can deploy sitemon using the following deployment YAML (also in this repo).  This would use the pre-built image that is available in dockerhub.  If you want to build the image, then see the instructions in section "How to build the container image".
+If you have an existing Kubernetes cluster, you can deploy sitemon using the following [deployment YAML](sitemon-deployment.yaml).  This would use the pre-built image that is available in dockerhub.  If you want to build the image, then see the instructions in section "[How to build the container image](#how-to-build-the-container-image)".
 Make sure to change the environment variables as appropriate for your setting.
 ```
 apiVersion: apps/v1
@@ -69,11 +69,14 @@ kubectl -n sitemon apply -f sitemon-deployment.yaml
 ```
 You'd need to expose the application through a service (e.g., NodePort) or some form of ingress, to be able to have your Prometheus server scrape the metrics from sitemon pods.  Once exposed you should be able to access the metrics info from http://$nodeIP:$port/metrics.
 
+#### Screenshot of metrics info:
+![image info](metrics.png)
+   
    
 ### How to run sitemon in a container
 Obviously, you'd need docker installed in the host where you run this.
 
-You can use the pre-built image that is available in dockerhub.  If you want to build the image, then see the instructions in section "How to build the container image"
+You can use the pre-built image that is available in dockerhub.  If you want to build the image, then see the instructions in section "[How to build the container image](#how-to-build-the-container-image)"
 
 You can run the following to start the container.  
 ```
